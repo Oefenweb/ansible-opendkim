@@ -1,0 +1,3 @@
+{{ ansible_managed | comment }}
+
+DAEMON_ARGS='{% for key, value in opendkim_options.items() | sort %} -{{ key }} {{ value }}{% endfor %}'
