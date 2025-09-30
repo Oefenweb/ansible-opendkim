@@ -1,0 +1,38 @@
+# tasks file
+---
+- name: keys | create directories
+  ansible.builtin.file:
+    path: "{{ item.dest | dirname }}"
+    state: directory
+    owner: "{{ item.owner | default(opendkim_user) }}"
+    group: "{{ item.group | default(opendkim_group) }}"
+    mode: '0700'
+  with_items: "{{ opendkim_key_map }}"
+  when: item.state is undefined or item.state == 'present'
+  tags:
+    - opendkim-keys-directories-create
+
+- name: keys | copy files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ item.owner | default(opendkim_user) }}"
+    group: "{{ item.group | default(opendkim_group) }}"
+    mode: "{{ item.mode | default('0600') }}"
+  with_items: "{{ opendkim_key_map }}"
+  when: item.state is undefined or item.state == 'present'
+  notify: restart opendkim
+  tags:
+    - opendkim-keys-files-copy
+
+- name: keys | remove files
+  ansible.builtin.file:
+    path: "{{ item.dest }}"
+    state: absent
+  with_items: "{{ opendkim_key_map }}"
+  when:
+    - item.state is defined
+    - item.state == 'absent'
+  notify: restart opendkim
+  tags:
+    - opendkim-keys-files-remove

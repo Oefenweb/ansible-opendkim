@@ -7,17 +7,17 @@ opendkim_preset_opendkim_conf:
     # /usr/share/doc/opendkim/examples/opendkim.conf.sample for complete
     # documentation of available configuration parameters.
 
-    Syslog			{{ opendkim_preset_syslog | bool | ternary('yes', 'no') }}
-    SyslogSuccess		yes
-    #LogWhy			no
+    Syslog			{{ opendkim_syslog | bool | ternary('yes', 'no') }}
+    SyslogSuccess		{{ opendkim_syslog_success | bool | ternary('yes', 'no') }}
+    #LogWhy			{{ opendkim_log_why | bool | ternary('yes', 'no') }}
 
     # Common signing and verification parameters. In Debian, the "From" header is
     # oversigned, because it is often the identity key used by reputation systems
     # and thus somewhat security sensitive.
     Canonicalization	relaxed/simple
-    #Mode			{{ opendkim_preset_mode }}
-    #SubDomains		{{ opendkim_preset_sub_domains | bool | ternary('yes', 'no') }}
-    OversignHeaders		{{ opendkim_preset_oversign_headers }}
+    #Mode			{{ opendkim_mode }}
+    #SubDomains		{{ opendkim_sub_domains | bool | ternary('yes', 'no') }}
+    OversignHeaders		{{ opendkim_oversign_headers }}
 
     # Signing domain, selector, and key (required). For example, perform signing
     # for domain "example.com" with selector "2020" (2020._domainkey.example.com),
@@ -31,19 +31,19 @@ opendkim_preset_opendkim_conf:
     # using a local socket with MTAs that access the socket as a non-privileged
     # user (for example, Postfix). You may need to add user "postfix" to group
     # "opendkim" in that case.
-    UserID			{{ opendkim_preset_user }}
-    UMask			{{ opendkim_preset_umask }}
+    UserID			{{ opendkim_user }}
+    UMask			{{ opendkim_umask }}
 
     # Socket for the MTA connection (required). If the MTA is inside a chroot jail,
     # it must be ensured that the socket is accessible. In Debian, Postfix runs in
     # a chroot in /var/spool/postfix, therefore a Unix socket would have to be
     # configured as shown on the last line below.
-    Socket			local:{{ opendkim_preset_rundir }}/opendkim.sock
+    Socket			local:{{ opendkim_rundir }}/opendkim.sock
     #Socket			inet:8891@localhost
     #Socket			inet:8891
     #Socket			local:/var/spool/postfix/opendkim/opendkim.sock
 
-    PidFile			{{ opendkim_preset_pidfile }}
+    PidFile			{{ opendkim_pidfile }}
 
     # Hosts for which to sign rather than verify, default is 127.0.0.1. See the
     # OPERATION section of opendkim(8) for more information.
@@ -51,7 +51,7 @@ opendkim_preset_opendkim_conf:
 
     # The trust anchor enables DNSSEC. In Debian, the trust anchor file is provided
     # by the package dns-root-data.
-    TrustAnchorFile		{{ opendkim_preset_trust_anchor_file }}
+    TrustAnchorFile		{{ opendkim_trust_anchor_file }}
     #Nameservers		127.0.0.1
 
 opendkim_preset_default_opendkim:
@@ -70,7 +70,7 @@ opendkim_preset_default_opendkim:
     # Change to /var/spool/postfix/run/opendkim to use a Unix socket with
     # postfix in a chroot:
     #RUNDIR=/var/spool/postfix/run/opendkim
-    RUNDIR={{ opendkim_preset_rundir }}
+    RUNDIR={{ opendkim_rundir }}
     #
     # Uncomment to specify an alternate socket
     # Note that setting this will override any Socket value in opendkim.conf
@@ -82,7 +82,7 @@ opendkim_preset_default_opendkim:
     #SOCKET=inet:12345@localhost
     # listen on 192.0.2.1 on port 12345:
     #SOCKET=inet:12345@192.0.2.1
-    USER={{ opendkim_preset_user }}
-    GROUP={{ opendkim_preset_group }}
-    PIDFILE={{ opendkim_preset_pidfile }}
+    USER={{ opendkim_user }}
+    GROUP={{ opendkim_group }}
+    PIDFILE={{ opendkim_pidfile }}
     EXTRAAFTER=

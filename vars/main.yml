@@ -6,17 +6,3 @@ opendkim_dependencies:
 
 opendkim_etc_default_file: /etc/default/opendkim
 opendkim_etc_conf_file: /etc/opendkim.conf
-
-opendkim_preset_rundir: /run/opendkim
-opendkim_preset_socket: inet:8891@localhost
-opendkim_preset_user: opendkim
-opendkim_preset_group: opendkim
-opendkim_preset_pidfile: "{{ opendkim_preset_rundir }}/opendkim.pid"
-
-opendkim_preset_syslog: true
-opendkim_preset_umask: '007'
-opendkim_preset_canonicalization: relaxed/simple
-opendkim_preset_mode: sv
-opendkim_preset_sub_domains: false
-opendkim_preset_trust_anchor_file: /usr/share/dns/root.key
-opendkim_preset_oversign_headers: From

@@ -1,6 +1,6 @@
 # tasks file
 ---
-- name: include variables
+- name: variables | include
   ansible.builtin.include_vars: "{{ item }}"
   with_first_found:
     - "_{{ ansible_distribution_release }}.yml"
@@ -11,45 +11,28 @@
     - opendkim
     - opendkim-include-variables
 
-- name: install dependencies  # noqa args[module]
-  ansible.builtin.apt:
-    name: "{{ opendkim_dependencies }}"
-    state: "{{ apt_install_state | default('latest') }}"
-    update_cache: true
-    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
-  tags:
-    - configuration
-    - opendkim
-    - opendkim-dependencies
-
-- name: install additional  # noqa args[module]
-  ansible.builtin.apt:
-    name: "{{ opendkim_install }}"
-    state: "{{ apt_install_state | default('latest') }}"
+- name: install
+  ansible.builtin.import_tasks: install.yml
   tags:
     - configuration
     - opendkim
     - opendkim-install
 
-- name: update configuration file(s)
-  ansible.builtin.template:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
-    owner: root
-    group: root
-    mode: '0644'
-  with_items:
-    - src: "{{ opendkim_etc_default_file.lstrip('/') }}.j2"
-      dest: "{{ opendkim_etc_default_file }}"
-    - src: "{{ opendkim_etc_conf_file.lstrip('/') }}.j2"
-      dest: "{{ opendkim_etc_conf_file }}"
-  notify: restart opendkim
+- name: keys
+  ansible.builtin.import_tasks: keys.yml
+  tags:
+    - configuration
+    - opendkim
+    - opendkim-keys
+
+- name: configuration
+  ansible.builtin.import_tasks: configuration.yml
   tags:
     - configuration
     - opendkim
     - opendkim-configuration
 
-- name: start and enable service
+- name: service | start and enable
   ansible.builtin.service:
     name: opendkim
     state: "{{ service_default_state | default('started') }}"

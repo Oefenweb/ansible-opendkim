@@ -1,0 +1,17 @@
+# tasks file
+---
+- name: configuration | update file(s)
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: root
+    group: root
+    mode: '0644'
+  with_items:
+    - src: "{{ opendkim_etc_default_file.lstrip('/') }}.j2"
+      dest: "{{ opendkim_etc_default_file }}"
+    - src: "{{ opendkim_etc_conf_file.lstrip('/') }}.j2"
+      dest: "{{ opendkim_etc_conf_file }}"
+  notify: restart opendkim
+  tags:
+    - opendkim-configuration-files-update
