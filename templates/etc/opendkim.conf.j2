@@ -1,1 +1,5 @@
 {{ ansible_managed | comment }}
+
+{% for line in opendkim_opendkim_conf | default([]) %}
+{{ line }}
+{% endfor %}

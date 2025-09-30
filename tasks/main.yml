@@ -1,11 +1,31 @@
 # tasks file
 ---
-- name: install package  # noqa args[module]
+- name: include variables
+  ansible.builtin.include_vars: "{{ item }}"
+  with_first_found:
+    - "_{{ ansible_distribution_release }}.yml"
+    - "_{{ ansible_distribution | lower }}.yml"
+    - _default.yml
+  tags:
+    - configuration
+    - opendkim
+    - opendkim-include-variables
+
+- name: install dependencies  # noqa args[module]
   ansible.builtin.apt:
     name: "{{ opendkim_dependencies }}"
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
     cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
+  tags:
+    - configuration
+    - opendkim
+    - opendkim-dependencies
+
+- name: install additional  # noqa args[module]
+  ansible.builtin.apt:
+    name: "{{ opendkim_install }}"
+    state: "{{ apt_install_state | default('latest') }}"
   tags:
     - configuration
     - opendkim
