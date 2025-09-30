@@ -85,13 +85,6 @@ opendkim_opendkim_conf_preset:
 
 opendkim_default_opendkim_preset:
   - |
-    RUNDIR={{ opendkim_rundir }}
-    SOCKET="{{ opendkim_socket }}"
-    USER={{ opendkim_user }}
-    GROUP={{ opendkim_group }}
-    PIDFILE={{ opendkim_pidfile }}
-    EXTRAAFTER=
-
     # Command-line options specified here will override the contents of
     # /etc/opendkim.conf. See opendkim(8) for a complete list of options.
     #DAEMON_OPTS=""
