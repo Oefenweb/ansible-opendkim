@@ -2,11 +2,5 @@
 ---
 opendkim_install: []
 
-opendkim_rundir: /run/opendkim
-opendkim_socket: inet:8891@localhost
-opendkim_user: opendkim
-opendkim_group: opendkim
-opendkim_pidfile: "{{ opendkim_rundir }}/opendkim.pid"
-
-opendkim_opendkim_conf: "{{ opendkim_opendkim_conf_preset }}"
-opendkim_default_opendkim: "{{ opendkim_default_opendkim_preset }}"
+opendkim_opendkim_conf: "{{ opendkim_preset_opendkim_conf }}"
+opendkim_default_opendkim: "{{ opendkim_preset_default_opendkim }}"
