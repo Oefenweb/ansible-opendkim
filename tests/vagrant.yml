@@ -11,6 +11,3 @@
       ansible.builtin.import_tasks: "{{ playbook_dir }}/tasks/pre.yml"
   roles:
     - ../../
-  vars:
-    opendkim_key_file_local: "{{ playbook_dir }}/../files/{{ opendkim_key_file_selector }}.private"
-    opendkim_key_file_remote: "/etc/dkimkeys/{{ opendkim_key_file_domain }}/{{ opendkim_key_file_selector }}.private"
