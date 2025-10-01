@@ -5,7 +5,7 @@ opendkim_opendkim_conf:
     Syslog {{ opendkim_syslog | bool | ternary('yes', 'no') }}
     UMask {{ opendkim_umask }}
     Domain {{ opendkim_key_file_domain }}
-    KeyFile {{ opendkim_key_file_remote }}
+    KeyFile {{ opendkim_key_key_file }}
     Selector {{ opendkim_key_file_selector }}
     Canonicalization {{ opendkim_canonicalization }}
     Mode {{ opendkim_mode }}
@@ -25,11 +25,14 @@ opendkim_default_opendkim:
     PIDFILE={{ opendkim_pidfile }}
     EXTRAAFTER=
 
-opendkim_key_map:
-  - src: "{{ opendkim_key_file_local }}"
-    dest: "{{ opendkim_key_file_remote }}"
-
 opendkim_key_file_domain: example.com
 opendkim_key_file_selector: "{{ ansible_date_time['year'] }}"
-opendkim_key_file_local: "{{ playbook_dir }}/../files/{{ opendkim_key_file_selector }}.private"
-opendkim_key_file_remote: "/etc/dkimkeys/{{ opendkim_key_file_domain }}/{{ opendkim_key_file_selector }}.private"
+opendkim_key_key_directory: "/etc/dkimkeys/{{ opendkim_key_file_domain }}"
+opendkim_key_key_file: "{{ opendkim_key_key_directory }}/{{ opendkim_key_file_selector }}.private"
+
+opendkim_key_map:
+  - src: "{{ opendkim_key_key_file }}"
+    remote_src: true
+  - content: |
+      // Lorem ipsum dolor sit amet, consectetur adipiscing elit
+    dest: "{{ opendkim_key_key_file.replace(opendkim_key_file_domain, 'ixample.com') }}"

@@ -3,9 +3,9 @@
   hosts: all
   become: true
   pre_tasks:
-    - name: include vars
+    - name: include vars | specific
+      ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/_molecule.yml"
+    - name: include vars | main
       ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/main.yml"
-    - name: include vars | molecule
-      ansible.builtin.include_vars: "{{ playbook_dir }}/../../tests/vars/molecule.yml"
   roles:
     - ../../../
