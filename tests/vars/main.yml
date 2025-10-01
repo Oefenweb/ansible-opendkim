@@ -31,5 +31,5 @@ opendkim_key_map:
 
 opendkim_key_file_domain: example.com
 opendkim_key_file_selector: "{{ ansible_date_time['year'] }}"
-opendkim_key_file_local: "{{ playbook_dir }}/../files/{{ opendkim_key_file_selector }}.private"
+opendkim_key_file_local: "{{ playbook_dir }}/../../files/{{ opendkim_key_file_selector }}.private"
 opendkim_key_file_remote: "/etc/dkimkeys/{{ opendkim_key_file_domain }}/{{ opendkim_key_file_selector }}.private"
