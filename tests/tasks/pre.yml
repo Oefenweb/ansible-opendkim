@@ -3,6 +3,7 @@
 - name: pre | install dependencies
   ansible.builtin.apt:
     name:
+      - openssl
       - opendkim-tools
     state: "{{ apt_install_state | default('latest') }}"
     update_cache: true
@@ -10,6 +11,7 @@
 
 - name: pre | generate key
   ansible.builtin.shell: >
+    ls -lhA {{ opendkim_key_file_local | dirname }} &&
     opendkim-genkey \
       -t \
       -s {{ opendkim_key_file_selector }} \
