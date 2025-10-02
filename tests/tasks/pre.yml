@@ -1,0 +1,22 @@
+# pre test file
+---
+- name: pre | install dependencies
+  ansible.builtin.apt:
+    name:
+      - opendkim-tools
+    state: "{{ apt_install_state | default('latest') }}"
+    update_cache: true
+    cache_valid_time: "{{ apt_update_cache_valid_time | default(3600) }}"
+
+- name: pre | add key directory
+  ansible.builtin.file:
+    path: "{{ opendkim_key_key_directory }}"
+    state: directory
+    mode: '0700'
+
+- name: pre | generate key
+  ansible.builtin.command: >
+    opendkim-genkey -t -s {{ opendkim_key_file_selector }} -d {{ opendkim_key_file_domain }}
+  args:
+    creates: "{{ opendkim_key_key_file }}"
+    chdir: "{{ opendkim_key_key_directory }}"

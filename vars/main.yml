@@ -1,0 +1,8 @@
+# vars file
+---
+opendkim_dependencies:
+  - opendkim
+  - opendkim-tools
+
+opendkim_etc_default_file: /etc/default/opendkim
+opendkim_etc_conf_file: /etc/opendkim.conf

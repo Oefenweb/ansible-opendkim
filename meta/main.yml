@@ -1,0 +1,21 @@
+# meta file
+---
+galaxy_info:
+  author: oefenweb
+  role_name: opendkim
+  company: Oefenweb.nl B.V.
+  description: Set up OpenDKIM in Ubuntu systems
+  license: MIT
+  min_ansible_version: 2.10.0
+  platforms:
+    - name: Ubuntu
+      versions:
+        - bionic
+        - focal
+        - jammy
+        - noble
+  galaxy_tags:
+    - system
+    - networking
+    - mail
+dependencies: []

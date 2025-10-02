@@ -1,0 +1,7 @@
+# handlers file
+---
+- name: restart opendkim
+  ansible.builtin.service:
+    name: opendkim
+    state: restarted
+  when: service_default_state | default('started') == 'started'
