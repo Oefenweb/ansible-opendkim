@@ -28,5 +28,3 @@ ansible.cfg
 # Other files #
 ###############
 !empty
-files/*.private
-files/*.txt
