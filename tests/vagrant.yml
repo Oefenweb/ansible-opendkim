@@ -5,9 +5,7 @@
   remote_user: vagrant
   become: true
   pre_tasks:
-    - name: include vars | specific
-      ansible.builtin.include_vars: "{{ playbook_dir }}/vars/_vagrant.yml"
-    - name: include vars | main
+    - name: include vars
       ansible.builtin.include_vars: "{{ playbook_dir }}/vars/main.yml"
     - name: include tasks
       ansible.builtin.import_tasks: "{{ playbook_dir }}/tasks/pre.yml"
