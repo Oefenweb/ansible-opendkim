@@ -46,11 +46,55 @@ None
 
 #### Example
 
+##### Simple
+
 ```yaml
 ---
 - hosts: all
   roles:
     - oefenweb.opendkim
+```
+
+##### Advance
+
+```yaml
+- hosts: all
+  roles:
+    - oefenweb.opendkim
+  vars:
+    opendkim_opendkim_conf:
+      - |
+        Syslog {{ opendkim_syslog | bool | ternary('yes', 'no') }}
+        UMask {{ opendkim_umask }}
+        Domain {{ opendkim_key_file_domain }}
+        KeyFile {{ opendkim_key_file_remote }}
+        Selector {{ opendkim_key_file_selector }}
+        Canonicalization {{ opendkim_canonicalization }}
+        Mode {{ opendkim_mode }}
+        SubDomains {{ opendkim_sub_domains | bool | ternary('yes', 'no') }}
+        Socket {{ opendkim_socket }}
+        PidFile {{ opendkim_pidfile }}
+        OversignHeaders {{ opendkim_oversign_headers }}
+        TrustAnchorFile {{ opendkim_trust_anchor_file }}
+        UserID {{ opendkim_user }}
+
+    opendkim_default_opendkim:
+      - |
+        RUNDIR={{ opendkim_rundir }}
+        SOCKET="{{ opendkim_socket }}"
+        USER={{ opendkim_user }}
+        GROUP={{ opendkim_group }}
+        PIDFILE={{ opendkim_pidfile }}
+        EXTRAAFTER=
+
+    opendkim_key_map:
+      - src: "{{ opendkim_key_file_local }}"
+        dest: "{{ opendkim_key_file_remote }}"
+
+    opendkim_key_file_domain: example.com
+    opendkim_key_file_selector: 2025
+    opendkim_key_file_local: "{{ playbook_dir }}/files/opendkim/{{ opendkim_key_file_remote.lstrip('/') }}"
+    opendkim_key_file_remote: "/etc/dkimkeys/{{ opendkim_key_file_domain }}/{{ opendkim_key_file_selector }}.private"
 ```
 
 #### License
