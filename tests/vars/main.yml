@@ -26,7 +26,7 @@ opendkim_default_opendkim:
     EXTRAAFTER=
 
 opendkim_key_file_domain: example.com
-opendkim_key_file_selector: "{{ ansible_date_time['year'] }}"
+opendkim_key_file_selector: "{{ ansible_facts['date_time']['year'] }}"
 opendkim_key_key_directory: "/etc/dkimkeys/{{ opendkim_key_file_domain }}"
 opendkim_key_key_file: "{{ opendkim_key_key_directory }}/{{ opendkim_key_file_selector }}.private"
 
